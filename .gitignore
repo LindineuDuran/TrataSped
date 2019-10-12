@@ -4,3 +4,7 @@
 *.class
 *.MF
 *.properties
+Inventario.csv
+Organizacoes.csv
+Participantes.csv
+Produtos.csv
