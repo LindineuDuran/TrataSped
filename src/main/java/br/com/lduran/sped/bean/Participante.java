@@ -1,15 +1,11 @@
 package br.com.lduran.sped.bean;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Participantes")
 public class Participante extends ObjectBI implements Empresa
 {
-
 	@Id
 	@Column(length = 100, name = "IdParticipante")
 	private String cnpj;
@@ -300,11 +296,9 @@ public class Participante extends ObjectBI implements Empresa
 	@Override
 	public String toString()
 	{
-		return "Participante [cnpj=" + this.cnpj + ", razaoSocial=" + this.razaoSocial + ", cep=" + this.cep + ", codigoIBGE="
-				+ this.codigoIBGE + ", uf=" + this.uf + ", estado=" + this.estado + ", regiaoMetropolitana=" + this.regiaoMetropolitana
-				+ ", mesorregiao=" + this.mesorregiao + ", microrregiao=" + this.microrregiao + ", latitude=" + this.latitude
-				+ ", longitude=" + this.longitude + ", area=" + this.area + ", populacao=" + this.populacao + ", regiao=" + this.regiao
-				+ ", cidade=" + this.cidade + ", cidadeEstado=" + this.cidadeEstado + ", endereco=" + this.endereco + ", bairro="
-				+ this.bairro + ", pais=" + this.pais + ", segmento=" + this.segmento + "]";
+		return "Participante [cnpj=" + this.cnpj + ", razaoSocial=" + this.razaoSocial + ", cep=" + this.cep + ", codigoIBGE=" + this.codigoIBGE + ", uf=" + this.uf + ", estado=" + this.estado + ", regiaoMetropolitana="
+				+ this.regiaoMetropolitana + ", mesorregiao=" + this.mesorregiao + ", microrregiao=" + this.microrregiao + ", latitude=" + this.latitude + ", longitude=" + this.longitude + ", area=" + this.area + ", populacao="
+				+ this.populacao + ", regiao=" + this.regiao + ", cidade=" + this.cidade + ", cidadeEstado=" + this.cidadeEstado + ", endereco=" + this.endereco + ", bairro=" + this.bairro + ", pais=" + this.pais + ", segmento="
+				+ this.segmento + "]";
 	}
 }

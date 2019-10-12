@@ -9,7 +9,7 @@ import javax.swing.*;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import br.com.lduran.sped.bean.Organizacao;
+import br.com.lduran.sped.bean.*;
 import br.com.lduran.sped.features.FileHandler;
 import br.com.lduran.sped.features.ListHandler;
 import br.com.lduran.sped.listas.AvailableProcesses;
@@ -31,6 +31,11 @@ public class FrmSped extends JFrame
 		this.setVisible(true);
 	}
 
+	/**
+	 * JPanel Builder
+	 *
+	 * @return
+	 */
 	private JPanel montaJPanelPrincipal()
 	{
 		JPanel p = new JPanel();
@@ -68,6 +73,16 @@ public class FrmSped extends JFrame
 		return p;
 	}
 
+	/**
+	 * Label Builder
+	 *
+	 * @param texto
+	 * @param posX
+	 * @param posY
+	 * @param largura
+	 * @param altura
+	 * @return
+	 */
 	private JLabel makeLabel(String texto, int posX, int posY, int largura, int altura)
 	{
 		JLabel lbl = new JLabel(texto);
@@ -77,6 +92,16 @@ public class FrmSped extends JFrame
 		return lbl;
 	}
 
+	/**
+	 * JScrollPane Builder
+	 *
+	 * @param availableProc
+	 * @param posX
+	 * @param posY
+	 * @param largura
+	 * @param altura
+	 * @return
+	 */
 	private JScrollPane makeList(AvailableProcesses[] availableProc, int posX, int posY, int largura, int altura)
 	{
 		this.list = new JList(availableProc);
@@ -89,6 +114,16 @@ public class FrmSped extends JFrame
 		return scrollPane;
 	}
 
+	/**
+	 * TextField Builder
+	 *
+	 * @param texto
+	 * @param posX
+	 * @param posY
+	 * @param largura
+	 * @param altura
+	 * @return
+	 */
 	private JTextField makeTextField(String texto, int posX, int posY, int largura, int altura)
 	{
 		JTextField txtField = new JTextField(texto);
@@ -98,6 +133,16 @@ public class FrmSped extends JFrame
 		return txtField;
 	}
 
+	/**
+	 * Button Builder
+	 *
+	 * @param texto
+	 * @param posX
+	 * @param posY
+	 * @param largura
+	 * @param altura
+	 * @return
+	 */
 	private JButton makeButton(String texto, int posX, int posY, int largura, int altura)
 	{
 		JButton btn = new JButton(texto);
@@ -107,6 +152,9 @@ public class FrmSped extends JFrame
 		return btn;
 	}
 
+	/**
+	 * processButton Action
+	 */
 	private void execAction()
 	{
 		// ==================
@@ -133,7 +181,7 @@ public class FrmSped extends JFrame
 				}
 			}
 
-			// remember to change the file path
+			// get input file path
 			if ((this.txtInputFile != null) && (!this.txtInputFile.getText().equals("")))
 			{
 				String path = this.txtInputFile.getText();
@@ -158,12 +206,20 @@ public class FrmSped extends JFrame
 		// =================================
 		if (fileContent.size() > 0)
 		{
+			// generate list of organizations
 			String[] grupo =
 			{ "|0000|", "|0005|" };
 
 			List<Organizacao> organizacoes = (List<Organizacao>) lst.processFileInfo(fileContent, "Organizacoes", grupo);
-
 			Organizacao org = organizacoes.get(0);
+
+			// generate list of participants
+			List<Participante> participantes = (List<Participante>) lst.processFileInfo(org, fileContent, "Participantes", "Outros", "|0150|");
+
+			// generate list of products
+			List<Produto> produtos = (List<Produto>) lst.processFileInfo(org, fileContent, "Produtos", "Outros", "|0200|");
+
+			System.out.println("Teste");
 		}
 	}
 }

@@ -44,7 +44,7 @@ public class ListHandler
 	}
 
 	/**
-	 * Recebe dados de Escrituração Fiscal Digital e retorna objeto do tipo Organizacao
+	 * receives digital tax bookkeeping data and returns organization type object
 	 *
 	 * @param file
 	 * @return
@@ -53,14 +53,13 @@ public class ListHandler
 	{
 		try
 		{
-			// Processa informações da Lista
+			// process list info
 			List<String> auxList = this.extractGroupInfo(file, grupo);
 
 			BuildService bs = new BuildService();
 
-			// Gera Objeto<Organizacao>
-			List<? extends ObjectBI> objectList = new LinkedList<>();
-			objectList = bs.getObjectService(objectType).getObjectList(file);
+			// generate List<Organizacao>
+			List<? extends ObjectBI> objectList = bs.getObjectService(objectType).getObjectList(file);
 
 			return objectList;
 		}
@@ -80,22 +79,22 @@ public class ListHandler
 	 */
 	public List<? extends ObjectBI> processFileInfo(Organizacao org, List<String> file, String objectType, String criteria, String... grupo)
 	{
-		// Processa informações da Lista
+		// process list info
 		List<String> auxList = this.extractGroupInfo(file, grupo);
 
 		BuildService bs = new BuildService();
 
 		List<? extends ObjectBI> objectList = new LinkedList<>();
-		// if(criteria.equals("Outros"))
-		// {
-		// // Gera List<ObjectBI>
-		// objectList = this.bs.getObjectService(objectType).getObjectList(auxList);
-		// }
-		// else
-		// {
-		// // Gera List<ObjectBI>
-		// objectList = this.bs.getObjectService(objectType).getObjectList(auxList, org, criteria);
-		// }
+		if (criteria.equals("Outros"))
+		{
+			// generate List<ObjectBI>
+			objectList = bs.getObjectService(objectType).getObjectList(auxList);
+		}
+		else
+		{
+			// generate List<ObjectBI>
+			objectList = bs.getObjectService(objectType).getObjectList(auxList, org, criteria);
+		}
 
 		return objectList;
 	}

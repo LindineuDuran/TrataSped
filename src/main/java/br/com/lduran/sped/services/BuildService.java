@@ -7,7 +7,16 @@ public class BuildService
 		switch (objectType)
 		{
 		case "Organizacoes":
-			return new OrgServiceImpl();
+			OrgService orgService = new OrgServiceImpl();
+			return (ObjectService) orgService;
+
+		case "Participantes":
+			ParticipanteService participanteService = new ParticipanteServiceImpl();
+			return (ObjectService) participanteService;
+
+		case "Produtos":
+			ProdutoService produtoService = new ProdutoServiceImpl();
+			return (ObjectService) produtoService;
 
 		default:
 			return null;
