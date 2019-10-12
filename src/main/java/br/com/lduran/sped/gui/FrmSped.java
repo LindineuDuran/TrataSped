@@ -48,7 +48,7 @@ public class FrmSped extends JFrame
 		JLabel lblInputFile = this.makeLabel("Input File:", 10, 5, 100, 25);
 		p.add(lblInputFile);
 
-		this.txtInputFile = this.makeTextField("C:\\Temp\\New\\GruposSPED.txt", 10, 30, 370, 25);
+		this.txtInputFile = this.makeTextField("C:\\GitHub\\TrataSped\\GruposSPED.txt", 10, 30, 370, 25);
 		p.add(this.txtInputFile);
 
 		JLabel lblOutputFile = this.makeLabel("Output Type:", 10, 65, 100, 25);
