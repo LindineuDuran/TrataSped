@@ -18,6 +18,10 @@ public class BuildService
 			ProdutoService produtoService = new ProdutoServiceImpl();
 			return (ObjectService) produtoService;
 
+		case "Inventario":
+			InventarioService inventarioService = new InventarioServiceImpl();
+			return (ObjectService) inventarioService;
+
 		default:
 			return null;
 		}

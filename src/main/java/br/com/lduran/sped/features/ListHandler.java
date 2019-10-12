@@ -1,5 +1,6 @@
 package br.com.lduran.sped.features;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -97,5 +98,33 @@ public class ListHandler
 		}
 
 		return objectList;
+	}
+
+	/**
+	 * Format the List<Object> as .csv
+	 *
+	 * @param dir
+	 * @param nomeArquivo
+	 * @param lstObjetosBI
+	 * @param sobreescreve
+	 * @throws IOException
+	 */
+	public List<String> formatReport(List<ObjectBI> lstObjetosBI, String objectType)
+	{
+		List<String> relatorio = new LinkedList<>();
+
+		BuildService bs = new BuildService();
+		String header = bs.getObjectService(objectType).getObjectHeader();
+		relatorio.add(header);
+
+		if (!lstObjetosBI.isEmpty())
+		{
+			for (ObjectBI line : lstObjetosBI)
+			{
+				relatorio.add(bs.getObjectService(objectType).getObjectContent(line));
+			}
+		}
+
+		return relatorio;
 	}
 }

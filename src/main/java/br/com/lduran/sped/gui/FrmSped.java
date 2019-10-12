@@ -2,6 +2,8 @@ package br.com.lduran.sped.gui;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,12 +19,14 @@ import br.com.lduran.sped.listas.AvailableProcesses;
 public class FrmSped extends JFrame
 {
 	private JTextField txtInputFile;
+	private JCheckBox chkSaveBD;
+	private JCheckBox chkSaveTXT;
 	private JList list;
 
 	public FrmSped()
 	{
 		super("Processa Dados SPED");
-		this.setSize(800, 300);
+		this.setSize(560, 195);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		JPanel panel = this.montaJPanelPrincipal();
@@ -47,23 +51,32 @@ public class FrmSped extends JFrame
 		this.txtInputFile = this.makeTextField("C:\\Temp\\New\\GruposSPED.txt", 10, 30, 370, 25);
 		p.add(this.txtInputFile);
 
-		JLabel lblProcess = this.makeLabel("Available Processes:", 600, 5, 150, 25);
+		JLabel lblOutputFile = this.makeLabel("Output Type:", 10, 65, 100, 25);
+		p.add(lblOutputFile);
+
+		chkSaveBD = this.makeCheckBox("Save in Data Base", 10, 85, 150, 25);
+		p.add(chkSaveBD);
+
+		chkSaveTXT = this.makeCheckBox("Save in TXT File", 170, 85, 120, 25);
+		p.add(chkSaveTXT);
+
+		JLabel lblProcess = this.makeLabel("Available Processes:", 390, 5, 150, 25);
 		p.add(lblProcess);
 
 		// String array of Available Processes
 		AvailableProcesses[] availableProc = AvailableProcesses.values();
 
-		JScrollPane scroll = this.makeList(availableProc, 600, 30, 175, 190);
+		JScrollPane scroll = this.makeList(availableProc, 390, 30, 145, 80);
 		p.add(scroll);
 
-		JButton processButton = this.makeButton("Process", 10, 230, 100, 25);
+		JButton processButton = this.makeButton("Process", 10, 120, 100, 25);
 		processButton.addActionListener((ActionEvent event) ->
 		{
 			this.execAction();
 		});
 		p.add(processButton);
 
-		JButton quitButton = this.makeButton("Quit", 715, 230, 60, 25);
+		JButton quitButton = this.makeButton("Quit", 475, 120, 60, 25);
 		quitButton.addActionListener((ActionEvent event) ->
 		{
 			System.exit(0);
@@ -152,6 +165,15 @@ public class FrmSped extends JFrame
 		return btn;
 	}
 
+	private JCheckBox makeCheckBox(String texto, int posX, int posY, int largura, int altura)
+	{
+		JCheckBox chk = new JCheckBox(texto);
+		chk.setLocation(posX, posY);
+		chk.setSize(largura, altura);
+
+		return chk;
+	}
+
 	/**
 	 * processButton Action
 	 */
@@ -207,19 +229,70 @@ public class FrmSped extends JFrame
 		if (fileContent.size() > 0)
 		{
 			// generate list of organizations
-			String[] grupo =
+			String[] grupoOrganizacao =
 			{ "|0000|", "|0005|" };
 
-			List<Organizacao> organizacoes = (List<Organizacao>) lst.processFileInfo(fileContent, "Organizacoes", grupo);
-			Organizacao org = organizacoes.get(0);
+			List<Organizacao> organizacoes = (List<Organizacao>) lst.processFileInfo(fileContent, "Organizacoes", grupoOrganizacao);
+			Organizacao org = new Organizacao();
 
 			// generate list of participants
 			List<Participante> participantes = (List<Participante>) lst.processFileInfo(org, fileContent, "Participantes", "Outros", "|0150|");
 
-			// generate list of products
+			//
 			List<Produto> produtos = (List<Produto>) lst.processFileInfo(org, fileContent, "Produtos", "Outros", "|0200|");
 
-			System.out.println("Teste");
+			// generate list of inventory
+			String[] grupoApuracaoInventario =
+			{ "|H001|", "|H005|", "|H010|" };
+
+			if (organizacoes.size() > 0)
+			{
+				org = organizacoes.get(0);
+			}
+
+			List<Inventario> inventario = (List<Inventario>) lst.processFileInfo(org, fileContent, "Inventario", "Inventario", grupoApuracaoInventario);
+
+			// make lists reports
+			if (chkSaveTXT.isSelected())
+			{
+				System.out.println("Make reports");
+
+				this.saveProcessedReport(organizacoes, "Organizacoes");
+				this.saveProcessedReport(participantes, "Participantes");
+				this.saveProcessedReport(produtos, "Produtos");
+				this.saveProcessedReport(inventario, "Inventario");
+			}
+
+			// save in data base
+			if (chkSaveBD.isSelected())
+			{
+				System.out.println("Save in Data Base");
+			}
+		}
+	}
+
+	/**
+	 * save processed report
+	 *
+	 * @param lstObjetosBI
+	 */
+	private void saveProcessedReport(List<? extends ObjectBI> lstObjetosBI, String objectType)
+	{
+		try
+		{
+			// format the list<object> as .csv
+			ListHandler lst = new ListHandler();
+			List<String> relatorio = lst.formatReport((List<ObjectBI>) lstObjetosBI, objectType);
+
+			// save the file
+			FileHandler fh = new FileHandler();
+
+			Path path = Paths.get(this.txtInputFile.getText());
+			fh.writeStream(path.getParent().toString() + "\\" + objectType + ".csv", relatorio, false);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 }
