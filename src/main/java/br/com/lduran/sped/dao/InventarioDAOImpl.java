@@ -41,9 +41,6 @@ public class InventarioDAOImpl implements IInventarioDAO
 		Connection conn = null;
 		PreparedStatement stmt = null;
 
-//		`dataInventario`, `IdItem`, `unidade`, `quantidade`, `valorUnitario`, `valorTotal`, `propriedade`, `participante`, `textoComplementar`,
-//		`contaContabil`, `valorTotIR`, `organizacao`
-
 		try
 		{
 			conn = ConnectionManager.getConnection();
