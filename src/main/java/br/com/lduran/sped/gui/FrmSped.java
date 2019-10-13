@@ -12,6 +12,8 @@ import javax.swing.*;
 import org.apache.commons.lang3.ArrayUtils;
 
 import br.com.lduran.sped.bean.*;
+import br.com.lduran.sped.dao.*;
+import br.com.lduran.sped.exception.GlobalcodeException;
 import br.com.lduran.sped.features.FileHandler;
 import br.com.lduran.sped.features.ListHandler;
 import br.com.lduran.sped.listas.AvailableProcesses;
@@ -266,7 +268,59 @@ public class FrmSped extends JFrame
 			// save in data base
 			if (chkSaveBD.isSelected())
 			{
-				System.out.println("Save in Data Base");
+				OrganizacaoDAOImpl dbOrg = new OrganizacaoDAOImpl();
+
+				try
+				{
+					dbOrg.createTable();
+					dbOrg.saveAll(organizacoes);
+				}
+				catch (GlobalcodeException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				ParticipanteDAOImpl dbPart = new ParticipanteDAOImpl();
+
+				try
+				{
+					dbPart.createTable();
+					dbPart.saveAll(participantes);
+				}
+				catch (GlobalcodeException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				ProdutosDAOImpl dbProd = new ProdutosDAOImpl();
+
+				try
+				{
+					dbProd.createTable();
+					dbProd.saveAll(produtos);
+				}
+				catch (GlobalcodeException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				InventarioDAOImpl dbInv = new InventarioDAOImpl();
+
+				try
+				{
+					dbInv.createTable();
+					dbInv.saveAll(inventario);
+				}
+				catch (GlobalcodeException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				JOptionPane.showMessageDialog(null, "Saved in Data Base");
 			}
 		}
 	}

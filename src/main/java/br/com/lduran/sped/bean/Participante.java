@@ -1,70 +1,26 @@
 package br.com.lduran.sped.bean;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "Participantes")
 public class Participante extends ObjectBI implements Empresa
 {
-	@Id
-	@Column(length = 100, name = "IdParticipante")
 	private String cnpj;
-
-	@Column(name = "Participante")
 	private String razaoSocial = "";
-
-	@Column(name = "CEP")
 	private String cep = "";
-
-	@Column(name = "IdCidade")
 	private String codigoIBGE = "";
-
-	@Column(name = "UF")
 	private String uf = "";
-
-	@Column(name = "Estado")
 	private String estado = "";
-
-	@Column(name = "RegiaoMetropolitana")
 	private String regiaoMetropolitana = "";
-
-	@Column(name = "Mesorregiao")
 	private String mesorregiao = "";
-
-	@Column(name = "Microrregiao")
 	private String microrregiao = "";
-
-	@Column(name = "Latitude")
 	private Double latitude = 0.0;
-
-	@Column(name = "Longitude")
 	private Double longitude = 0.0;
-
-	@Column(name = "Area")
 	private Double area = 0.0;
-
-	@Column(name = "Populacao")
 	private Long populacao = (long) 0;
-
-	@Column(name = "Regiao")
 	private String regiao = "";
-
-	@Column(name = "Cidade")
 	private String cidade = "";
-
-	@Column(name = "CidadeEstado")
 	private String cidadeEstado = "";
-
-	@Column(name = "Endereco")
 	private String endereco = "";
-
-	@Column(name = "Bairro")
 	private String bairro = "";
-
-	@Column(name = "Pais")
 	private String pais = "";
-
-	@Column(name = "Segmento")
 	private String segmento = "";
 
 	@Override
@@ -209,6 +165,22 @@ public class Participante extends ObjectBI implements Empresa
 	public void setArea(Double area)
 	{
 		this.area = area;
+	}
+
+	/**
+	 * @return the populacao
+	 */
+	public Long getPopulacao()
+	{
+		return populacao;
+	}
+
+	/**
+	 * @param populacao the populacao to set
+	 */
+	public void setPopulacao(Long populacao)
+	{
+		this.populacao = populacao;
 	}
 
 	@Override

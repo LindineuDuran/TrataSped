@@ -1,74 +1,29 @@
 package br.com.lduran.sped.bean;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "Organizacoes")
 public class Organizacao extends ObjectBI
 {
-	@Id
-	@Column(name = "IdOrganizacao")
 	private String cnpj = "";
-
-	@Column(name = "Organizacao")
 	private String razaoSocial;
-
-	@Column(name = "CEP")
 	private String cep = "";
-
-	@Column(name = "IdCidade")
 	private String codigoIBGE = "";
-
-	@Column(name = "UF")
 	private String uf = "";
-
-	@Column(name = "Estado")
 	private String estado = "";
-
-	@Column(name = "RegiaoMetropolitana")
 	private String regiaoMetropolitana = "";
-
-	@Column(name = "Mesorregiao")
 	private String mesorregiao = "";
-
-	@Column(name = "Microrregiao")
 	private String microrregiao = "";
-
-	@Column(name = "Latitude")
 	private Double latitude = 0.0;
-
-	@Column(name = "Longitude")
 	private Double longitude = 0.0;
-
-	@Column(name = "Area")
 	private Double area = 0.0;
-
-	@Column(name = "Populacao")
 	private Long populacao = (long) 0;
-
-	@Column(name = "Regiao")
 	private String regiao = "";
-
-	@Column(name = "Cidade")
 	private String cidade = "";
-
-	@Column(name = "CidadeEstado")
 	private String cidadeEstado = "";
-
-	@Column(name = "Endereco")
 	private String endereco = "";
-
-	@Column(name = "Bairro")
 	private String bairro = "";
-
-	@Column(name = "Pais")
 	private String pais = "";
 
 	/**
-	 * 
+	 *
 	 */
 	public Organizacao()
 	{
@@ -399,11 +354,8 @@ public class Organizacao extends ObjectBI
 	@Override
 	public String toString()
 	{
-		return "Organizacao [cnpj=" + this.cnpj + ", razaoSocial=" + this.razaoSocial + ", cep=" + this.cep + ", codigoIBGE="
-				+ this.codigoIBGE + ", uf=" + this.uf + ", estado=" + this.estado + ", regiaoMetropolitana=" + this.regiaoMetropolitana
-				+ ", mesorregiao=" + this.mesorregiao + ", microrregiao=" + this.microrregiao + ", latitude=" + this.latitude
-				+ ", longitude=" + this.longitude + ", area=" + this.area + ", populacao=" + this.populacao + ", regiao=" + this.regiao
-				+ ", cidade=" + this.cidade + ", cidadeEstado=" + this.cidadeEstado + ", endereco=" + this.endereco + ", bairro="
-				+ this.bairro + ", pais=" + this.pais + "]";
+		return "Organizacao [cnpj=" + this.cnpj + ", razaoSocial=" + this.razaoSocial + ", cep=" + this.cep + ", codigoIBGE=" + this.codigoIBGE + ", uf=" + this.uf + ", estado=" + this.estado + ", regiaoMetropolitana="
+				+ this.regiaoMetropolitana + ", mesorregiao=" + this.mesorregiao + ", microrregiao=" + this.microrregiao + ", latitude=" + this.latitude + ", longitude=" + this.longitude + ", area=" + this.area + ", populacao="
+				+ this.populacao + ", regiao=" + this.regiao + ", cidade=" + this.cidade + ", cidadeEstado=" + this.cidadeEstado + ", endereco=" + this.endereco + ", bairro=" + this.bairro + ", pais=" + this.pais + "]";
 	}
 }

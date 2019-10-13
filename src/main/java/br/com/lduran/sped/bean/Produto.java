@@ -1,24 +1,11 @@
 package br.com.lduran.sped.bean;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
 public class Produto extends ObjectBI
 {
-	@Id
-	@Column(name = "IdProduto")
 	private String IdProduto = "";
-
-	@Column(name = "Produto")
 	private String descricao = "";
-
-	@Column(name = "TipoDeProduto")
 	private String tipoDeProduto = "";
-
-	@Column(name = "FamiliaDeProdutos")
 	private String familiaProd = "";
-
-	@Column(name = "GrupoDeProdutos")
 	private String grupoProd = "";
 
 	public String getTipoDeProduto()

@@ -2,49 +2,20 @@ package br.com.lduran.sped.bean;
 
 import java.math.BigDecimal;
 
-import javax.persistence.*;
-
 public class Inventario extends ObjectBI
 {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "inventario_id", updatable = false, nullable = false)
 	private Long inventario_id;
-
-	@Column(name = "DataDoInventario")
 	private String dataInventario = "";
-
-	@Column(name = "IdItem")
 	private String IdItem = "";
-
-	@Column(name = "UnidadeDeMedida")
 	private String unidade = "";
-
-	@Column(name = "Quantidade")
 	private double quantidade = 0.0;
-
-	@Column(name = "ValorUnitario")
 	private BigDecimal valorUnitario = new BigDecimal(0);
-
-	@Column(name = "ValorTotalDoItem")
 	private BigDecimal valorTotal = new BigDecimal(0);
-
-	@Column(name = "Propriedade")
 	private String propriedade = "";
-
-	@Column(name = "IdParticipante")
 	private String participante = "";
-
-	@Column(name = "TextoComplementar")
 	private String textoComplementar = "";
-
-	@Column(name = "ContaContabil")
 	private String contaContabil = "";
-
-	@Column(name = "ValorTotalDoItemParaImpostoDeRenda")
 	private BigDecimal valorTotIR = new BigDecimal(0);
-
-	@Column(name = "IdOrganizacao")
 	private String organizacao = "";
 
 	/**
