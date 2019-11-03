@@ -9,10 +9,10 @@ public class ConnectionManager
 	/*
 	 * The values of the constants below must be in accordance with the database used.
 	 */
-	private static final String NOME_BANCO = "YOUR_DATA_BASE";
+	private static final String NOME_BANCO = "dbsped";
 	private static final String STR_CON = "jdbc:mysql://localhost/" + NOME_BANCO + "?serverTimezone=UTC";
-	private static final String USER = "YOUR_USER";
-	private static final String PASSWORD = "YOUR_PASSWORD";
+	private static final String USER = "root";
+	private static final String PASSWORD = "linshu";
 
 	public static Connection getConnection() throws GlobalcodeException
 	{
@@ -20,7 +20,7 @@ public class ConnectionManager
 		try
 		{
 			conn = DriverManager.getConnection(STR_CON, USER, PASSWORD);
-			System.out.println("[ConnectionManager]: Obtendo conexao");
+			System.out.println("[ConnectionManager]: Getting connection");
 		}
 		catch (SQLException e)
 		{
