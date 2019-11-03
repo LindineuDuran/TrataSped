@@ -20,7 +20,7 @@ public class ListHandler
 	 * @param grupo
 	 * @return
 	 */
-	private List<String> extractGroupInfo(List<String> file, String... grupo)
+	private List<String> extractGroupInfo(List<String> file, List<String> grupo)
 	{
 		// Build the RegEx
 		StringBuilder ptn = ToolsFactory.getInstance().makePattern(grupo);
@@ -45,12 +45,13 @@ public class ListHandler
 	}
 
 	/**
-	 * receives digital tax bookkeeping data and returns organization type object
+	 * receives digital tax bookkeeping data and returns organization type
+	 * object
 	 *
 	 * @param file
 	 * @return
 	 */
-	public List<? extends ObjectBI> processFileInfo(List<String> file, String objectType, String... grupo)
+	public List<? extends ObjectBI> processFileInfo(List<String> file, String objectType, List<String> grupo)
 	{
 		try
 		{
@@ -78,7 +79,7 @@ public class ListHandler
 	 * @param file
 	 * @return
 	 */
-	public List<? extends ObjectBI> processFileInfo(Organizacao org, List<String> file, String objectType, String criteria, String... grupo)
+	public List<? extends ObjectBI> processFileInfo(Organizacao org, List<String> file, String objectType, String criteria, List<String> grupo)
 	{
 		// process list info
 		List<String> auxList = this.extractGroupInfo(file, grupo);

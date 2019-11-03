@@ -1,22 +1,11 @@
 package br.com.lduran.sped.gui;
 
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
+import java.awt.event.*;
 
 import javax.swing.*;
 
-import org.apache.commons.lang3.ArrayUtils;
-
-import br.com.lduran.sped.bean.*;
-import br.com.lduran.sped.dao.*;
-import br.com.lduran.sped.exception.GlobalcodeException;
-import br.com.lduran.sped.features.FileHandler;
-import br.com.lduran.sped.features.ListHandler;
 import br.com.lduran.sped.listas.AvailableProcesses;
+import br.com.lduran.sped.process.Processamento;
 
 public class FrmSped extends JFrame
 {
@@ -72,9 +61,16 @@ public class FrmSped extends JFrame
 		p.add(scroll);
 
 		JButton processButton = this.makeButton("Process", 10, 120, 100, 25);
-		processButton.addActionListener((ActionEvent event) ->
+
+		processButton.addMouseListener(new MouseAdapter()
 		{
-			this.execAction();
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				Processamento proc = new Processamento(txtInputFile.getText(), list.getSelectedValuesList(), chkSaveTXT.isSelected(), chkSaveBD.isSelected());
+				Thread t = new Thread(proc);
+				t.start();
+			}
 		});
 		p.add(processButton);
 
@@ -174,179 +170,5 @@ public class FrmSped extends JFrame
 		chk.setSize(largura, altura);
 
 		return chk;
-	}
-
-	/**
-	 * processButton Action
-	 */
-	private void execAction()
-	{
-		// ==================
-		// read the text file
-		// ==================
-		FileHandler fh = new FileHandler();
-		List<String> fileContent = new LinkedList<>();
-		try
-		{
-			List<String> selectedValuesList = this.list.getSelectedValuesList();
-			String[] grupo =
-			{};
-
-			for (Object item : selectedValuesList)
-			{
-				for (AvailableProcesses ap : AvailableProcesses.values())
-				{
-					if (item.toString().equalsIgnoreCase(ap.name()))
-					{
-						grupo = ArrayUtils.addAll(ap.getGrupo(), grupo);
-
-						break;
-					}
-				}
-			}
-
-			// get input file path
-			if ((this.txtInputFile != null) && (!this.txtInputFile.getText().equals("")))
-			{
-				String path = this.txtInputFile.getText();
-				fileContent = fh.readStream(path, grupo);
-			}
-			else if (this.txtInputFile != null)
-			{
-				JOptionPane.showMessageDialog(null, "Fill the Input File field!!!");
-			}
-
-			JOptionPane.showMessageDialog(null, "File loaded: " + fileContent.size() + " lines");
-		}
-		catch (IOException e)
-		{
-			JOptionPane.showMessageDialog(null, e.getClass().getName() + "\r\n" + e.getMessage());
-		}
-
-		ListHandler lst = new ListHandler();
-
-		// =================================
-		// Make a Object from a List<String>
-		// =================================
-		if (fileContent.size() > 0)
-		{
-			// generate list of organizations
-			String[] grupoOrganizacao =
-			{ "|0000|", "|0005|" };
-
-			List<Organizacao> organizacoes = (List<Organizacao>) lst.processFileInfo(fileContent, "Organizacoes", grupoOrganizacao);
-			Organizacao org = new Organizacao();
-
-			// generate list of participants
-			List<Participante> participantes = (List<Participante>) lst.processFileInfo(org, fileContent, "Participantes", "Outros", "|0150|");
-
-			//
-			List<Produto> produtos = (List<Produto>) lst.processFileInfo(org, fileContent, "Produtos", "Outros", "|0200|");
-
-			// generate list of inventory
-			String[] grupoApuracaoInventario =
-			{ "|H001|", "|H005|", "|H010|" };
-
-			if (organizacoes.size() > 0)
-			{
-				org = organizacoes.get(0);
-			}
-
-			List<Inventario> inventario = (List<Inventario>) lst.processFileInfo(org, fileContent, "Inventario", "Inventario", grupoApuracaoInventario);
-
-			// make lists reports
-			if (chkSaveTXT.isSelected())
-			{
-				System.out.println("Make reports");
-
-				this.saveProcessedReport(organizacoes, "Organizacoes");
-				this.saveProcessedReport(participantes, "Participantes");
-				this.saveProcessedReport(produtos, "Produtos");
-				this.saveProcessedReport(inventario, "Inventario");
-			}
-
-			// save in data base
-			if (chkSaveBD.isSelected())
-			{
-				OrganizacaoDAOImpl dbOrg = new OrganizacaoDAOImpl();
-
-				try
-				{
-					dbOrg.createTable();
-					dbOrg.saveAll(organizacoes);
-				}
-				catch (GlobalcodeException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				ParticipanteDAOImpl dbPart = new ParticipanteDAOImpl();
-
-				try
-				{
-					dbPart.createTable();
-					dbPart.saveAll(participantes);
-				}
-				catch (GlobalcodeException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				ProdutosDAOImpl dbProd = new ProdutosDAOImpl();
-
-				try
-				{
-					dbProd.createTable();
-					dbProd.saveAll(produtos);
-				}
-				catch (GlobalcodeException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				InventarioDAOImpl dbInv = new InventarioDAOImpl();
-
-				try
-				{
-					dbInv.createTable();
-					dbInv.saveAll(inventario);
-				}
-				catch (GlobalcodeException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				JOptionPane.showMessageDialog(null, "Saved in Data Base");
-			}
-		}
-	}
-
-	/**
-	 * save processed report
-	 *
-	 * @param lstObjetosBI
-	 */
-	private void saveProcessedReport(List<? extends ObjectBI> lstObjetosBI, String objectType)
-	{
-		try
-		{
-			// format the list<object> as .csv
-			ListHandler lst = new ListHandler();
-			List<String> relatorio = lst.formatReport((List<ObjectBI>) lstObjetosBI, objectType);
-
-			// save the file
-			FileHandler fh = new FileHandler();
-
-			Path path = Paths.get(this.txtInputFile.getText());
-			fh.writeStream(path.getParent().toString() + "\\" + objectType + ".csv", relatorio, false);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 }

@@ -1,5 +1,10 @@
 package br.com.lduran.sped.features;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import br.com.lduran.sped.listas.AvailableProcesses;
 import br.com.lduran.sped.listas.IndicadorPropriedade;
 
 public class ToolsFactory
@@ -41,7 +46,7 @@ public class ToolsFactory
 	 * @param grupo
 	 * @return
 	 */
-	public StringBuilder makePattern(String... grupo)
+	public StringBuilder makePattern(List<String> grupo)
 	{
 		// Ex.: grupo = {"|9900|", "|C500|", "|D100|", "|D500|", "|D990|"};
 		StringBuilder ptn = new StringBuilder("");
@@ -72,7 +77,24 @@ public class ToolsFactory
 	}
 
 	/**
-	 * Obtem a descrição do enum Indicador de Propriedade
+	 * Get the groups of the listed AvailableProcesses
+	 *
+	 * @param selectedValuesList
+	 * @return
+	 */
+	public List<String> obtemAvailableProcesses(List<String> selectedValuesList)
+	{
+		List<String> grupo = new LinkedList<>();
+
+		for (Object item : selectedValuesList)
+		{
+			grupo.addAll(AvailableProcesses.stream().filter(d -> d.name().equals(item.toString())).map(d -> d.getGrupo()).flatMap(x -> x.stream()).collect(Collectors.toList()));
+		}
+		return grupo;
+	}
+
+	/**
+	 * Get the description of the Property Indicator enum
 	 *
 	 * @param codigo
 	 * @return
@@ -92,46 +114,4 @@ public class ToolsFactory
 
 		return descricao;
 	}
-
-	// /**
-	// * Obtem a descrição do enum SituacaoTributaria
-	// * @param codigo
-	// * @return
-	// */
-	// public String obtemSituacaoTributaria(String codigo)
-	// {
-	// String descricao = "";
-	//
-	// for (SituacaoTributaria st : SituacaoTributaria.values())
-	// {
-	// if (codigo.equalsIgnoreCase(st.name()))
-	// {
-	// descricao = st.getDescricao();
-	// break;
-	// }
-	// }
-	//
-	// return descricao;
-	// }
-
-	// /**
-	// * Obtem a descrição do enum AjustesApuracaoIPI
-	// * @param codigo
-	// * @return
-	// */
-	// public String obtemAjustesApuracaoIPI(String codigo)
-	// {
-	// String descricao = "";
-	//
-	// for (AjustesApuracaoIPI aai : AjustesApuracaoIPI.values())
-	// {
-	// if (codigo.equalsIgnoreCase(aai.name()))
-	// {
-	// descricao = aai.getDescricao();
-	// break;
-	// }
-	// }
-	//
-	// return descricao;
-	// }
 }

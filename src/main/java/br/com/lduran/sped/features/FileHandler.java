@@ -16,7 +16,7 @@ public class FileHandler
 	 * @return
 	 * @throws IOException
 	 */
-	public List<String> readStream(String filePath, String... grupo) throws IOException
+	public List<String> readStream(String filePath, List<String> grupo) throws IOException
 	{
 		Path path = Paths.get(filePath);
 
